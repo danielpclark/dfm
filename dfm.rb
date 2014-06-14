@@ -16,6 +16,10 @@ class DFM
 		}
 	end
 
+	def print_duplicates
+		print_json select_duplicates
+	end
+
 	private
 
 	def insert_file( file )
@@ -30,10 +34,6 @@ class DFM
 
 	def print_json( list )
 		puts list.to_json
-	end
-
-	def print_duplicates
-		print_json select_duplicates
 	end
 end
 
