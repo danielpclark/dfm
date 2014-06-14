@@ -33,7 +33,7 @@ class DFM
 	end
 
 	def print_json( list )
-		puts list.to_json
+		puts JSON.pretty_generate(list)
 	end
 end
 
