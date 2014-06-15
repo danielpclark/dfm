@@ -11,31 +11,29 @@ class DFM
 		@filters = Array( params.fetch( :filters, nil ) )
 		@path = ( ( params.fetch( :path, '.' ) ) || '.' ) + File::SEPARATOR
 		@hashFunc = Digest::MD5.new
+		recurse_path( @path )
 	end
 
-	def recurse_path( path = @path )
-		@filters.empty? ? ( filters = "" ) : ( filters = @filters.join( "," ).prepend( ".{" ).<<( "}" ) )
-		Dir.glob( path + '**' + File::SEPARATOR + '*' + filters ).each { |file|
-			if File.file? file
-				insert_file file
-			end
-		}
+	def print_singles( opt = "hex" )
+		print_match( { :type => opt, :duplicates => false } )
 	end
-
+	
 	def print_duplicates( opt = "hex" )
-		if !!opt[ "hex" ]
-			print_json hex
-		elsif !!opt[ "name" ]
-			print_json name
-		end
+		print_match( { :type => opt } )
 	end
 
-	def hex
-		select_duplicates
+	def hex( duplicates = true )
+		select_duplicates( { :hash => @files_by_hexdigest, :duplicates => duplicates } )
 	end
 
-	def name
-		select_duplicates( @files_by_name )
+	def name( duplicates = true )
+		select_duplicates( { :hash => @files_by_name, :duplicates => duplicates } )
+	end
+
+	def recurse( path )
+		@files_by_hexdigest = {}
+		@files_by_name = {}
+		recurse_path( path )
 	end
 
 	private
@@ -49,8 +47,27 @@ class DFM
 		@files_by_name[ File.basename( file ) ] = Array( @files_by_name[ File.basename( file ) ] ) << file
 	end
 
-	def select_duplicates( hash = @files_by_hexdigest )
-		hash.select { |k,v| v.length > 2 }
+	def recurse_path( path = @path )
+		@filters.empty? ? ( filters = "" ) : ( filters = @filters.join( "," ).prepend( ".{" ).<<( "}" ) )
+		Dir.glob( path + '**' + File::SEPARATOR + '*' + filters ).each { |file|
+			if File.file? file
+				insert_file file
+			end
+		}
+	end
+
+	def select_duplicates( opt = { :hash => @files_by_hexdigest, :duplicates => true } )
+		if opt[ :duplicates ]
+			opt[ :hash ].select { |k,v| v.length > 2 }
+		else
+			opt[ :hash ].select { |k,v| v.length == 1 }
+		end
+	end
+
+	def print_match( opt = { :type => "hex", :duplicates => true } )
+		if !!opt[ :type ][ "hex" ] or !!opt[ :type ][ "name" ]
+			print_json send opt[ :type ]
+		end
 	end
 
 	def print_json( hash )
@@ -72,8 +89,9 @@ if __FILE__ == $0
 		end
 	end.parse!
 	path = ARGV.select {|i| File.directory? i }[0]
-	program = DFM.new( options.update( path: path ) )
-	program.recurse_path
+	program = DFM.new( options.update( { :path => path } ) )
 	program.print_duplicates
 	program.print_duplicates( "name" )
+	# program.print_singles
+	# program.print_singles( "name" )
 end
