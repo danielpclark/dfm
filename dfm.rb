@@ -29,6 +29,14 @@ class DFM
 		end
 	end
 
+	def hex
+		select_duplicates
+	end
+
+	def name
+		select_duplicates(@files_by_name)
+	end
+
 	private
 
 	def insert_file( file )
