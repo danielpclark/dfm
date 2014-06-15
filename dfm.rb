@@ -3,14 +3,18 @@ require 'digest'
 require 'json'
 
 class DFM
-	def initialize
+	attr_accessor :filters
+
+	def initialize( params = {} )
 		@files_by_hexdigest = {}
 		@files_by_name = {}
+		@filters = Array( params.fetch(:filters, nil) )
 		@hashFunc = Digest::MD5.new
 	end
 
-	def recurse_path( path = '.'::+(File::SEPARATOR) )
-		Dir.glob( path + '**' + File::SEPARATOR + '*' ).each { |file|
+	def recurse_path( path = '.'::+( File::SEPARATOR ) )
+		@filters.empty? ? ( filters = "" ) : ( filters = @filters.join( "," ).prepend( ".{" ).<<( "}" ) )
+		Dir.glob( path + '**' + File::SEPARATOR + '*' + filters ).each { |file|
 			if File.file? file
 				insert_file file
 			end
@@ -45,7 +49,13 @@ class DFM
 	end
 end
 
-program = DFM.new
-program.recurse_path
-program.print_duplicates
-program.print_duplicates("name")
+# Eample Usage
+# program = DFM.new
+# program = DFM.new filters: "jpg"
+# program = DFM.new filters: ["jpg","gif","png"]
+if __FILE__ == $0
+	program = DFM.new
+	program.recurse_path
+	program.print_duplicates
+	program.print_duplicates("name")
+end
