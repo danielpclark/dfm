@@ -40,5 +40,5 @@ Either of these can be called with false if you want only single instances of fi
 Also included is a command line version which outputs nicely formatted JSON in case 
 you would like to use it with anything else.  Type `dfm -h` on the command line to get 
 a list of available options.  Running `dfm` by itself will recursively search the current 
-folder for all duplicates by both file name and hash indexes. 
+folder for all duplicates by both file name and MD5 hexdigest indexes. 
  

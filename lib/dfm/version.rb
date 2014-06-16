@@ -1,7 +1,10 @@
 class DFM
-	VERSION = "0.0.3"
+	#:nodoc:
+	VERSION = "0.0.4"
 end
 
+# Version 0.0.4
+# * RDOC
 # Version 0.0.3
 # * Updated commandline app to merge miltiple JSON searches as single JSON output
 # Version 0.0.2
