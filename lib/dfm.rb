@@ -1,6 +1,6 @@
-#!/usr/bin/ruby
 require 'digest'
 require 'json'
+require 'dfm/version'
 
 class DFM
 	attr_accessor :filters
@@ -66,32 +66,11 @@ class DFM
 
 	def print_match( opt = { :type => "hex", :duplicates => true } )
 		if !!opt[ :type ][ "hex" ] or !!opt[ :type ][ "name" ]
-			print_json send opt[ :type ]
+			print_json send( opt[ :type ], *Array( opt[ :duplicates ] ) )
 		end
 	end
 
 	def print_json( hash )
 		puts JSON.pretty_generate( hash )
 	end
-end
-
-# Eample Usage
-# program = DFM.new
-# program = DFM.new filters: "jpg"
-# program = DFM.new filters: ["jpg","gif","png"]
-if __FILE__ == $0
-	require 'optparse'
-	options = {}
-	OptionParser.new do |opts|
-		opts.banner = "Usage: dfm [options] [path]"
-		opts.on("-f", "--filters FILTERS", Array, "File extension filters") do |filters|
-			options[:filters] = filters
-		end
-	end.parse!
-	path = ARGV.select {|i| File.directory? i }[0]
-	program = DFM.new( options.update( { :path => path } ) )
-	program.print_duplicates
-	program.print_duplicates( "name" )
-	# program.print_singles
-	# program.print_singles( "name" )
 end

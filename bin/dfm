@@ -1,0 +1,43 @@
+#!/usr/bin/env ruby
+
+begin
+	require 'dfm'
+rescue LoadError
+	require 'rubygems'
+	require 'dfm'
+end
+require 'optparse'
+
+
+options = {}
+printers = Array.new
+
+OptionParser.new do |opts|
+	opts.banner = "Usage: dfm [options] [path]\nDefaults: dfm -x -d ." + File::SEPARATOR
+	opts.on("-f", "--filters FILTERS", Array, "File extension filters") do |filters|
+		options[:filters] = filters
+	end
+	opts.on("-x", "--duplicates-hex", "Prints duplicate files by MD5 hexdigest") do |dh|
+		printers << "dh"
+	end
+	opts.on("-d", "--duplicates-name", "Prints duplicate files by file name") do |dh|
+		printers << "dn"
+	end
+	opts.on("-s", "--singles-hex", "Prints non-duplicate files by MD5 hexdigest") do |dh|
+		printers << "sh"
+	end
+	opts.on("-n", "--singles-name", "Prints non-duplicate files by file name") do |dh|
+		printers << "sn"
+	end
+end.parse!
+path = ARGV.select {|i| File.directory? i }[0]
+program = DFM.new( options.update( { :path => path } ) )
+if printers.empty?
+	program.print_duplicates
+	program.print_duplicates( "name" )
+else
+	if printers.include? "dh"; program.print_duplicates; end
+	if printers.include? "dn"; program.print_duplicates( "name" ); end
+	if printers.include? "sh"; program.print_singles; end
+	if printers.include? "sn"; program.print_singles( "name" ); end
+end
