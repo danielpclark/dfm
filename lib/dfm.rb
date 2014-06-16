@@ -58,7 +58,7 @@ class DFM
 
 	def select_duplicates( opt = { :hash => @files_by_hexdigest, :duplicates => true } )
 		if opt[ :duplicates ]
-			opt[ :hash ].select { |k,v| v.length > 2 }
+			opt[ :hash ].select { |k,v| v.length >= 2 }
 		else
 			opt[ :hash ].select { |k,v| v.length == 1 }
 		end

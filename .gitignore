@@ -1,0 +1,4 @@
+# Created by http://www.gitignore.io
+
+### Ruby ###
+*.gem
