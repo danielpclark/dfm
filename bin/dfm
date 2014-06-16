@@ -13,7 +13,7 @@ options = {}
 printers = Array.new
 
 OptionParser.new do |opts|
-	opts.banner = "Usage: dfm [options] [path]\nDefaults: dfm -x -d ." + File::SEPARATOR
+	opts.banner = "Usage: dfm [options] [path]\nDefaults: dfm -xd ." + File::SEPARATOR
 	opts.on("-f", "--filters FILTERS", Array, "File extension filters") do |filters|
 		options[:filters] = filters
 	end
@@ -33,11 +33,12 @@ end.parse!
 path = ARGV.select {|i| File.directory? i }[0]
 program = DFM.new( options.update( { :path => path } ) )
 if printers.empty?
-	program.print_duplicates
-	program.print_duplicates( "name" )
+	puts JSON.pretty_generate( program.hex.update( program.name ) )
 else
-	if printers.include? "dh"; program.print_duplicates; end
-	if printers.include? "dn"; program.print_duplicates( "name" ); end
-	if printers.include? "sh"; program.print_singles; end
-	if printers.include? "sn"; program.print_singles( "name" ); end
+	hash = {}
+	if printers.include? "dh"; hash.update( program.hex ); end
+	if printers.include? "dn"; hash.update( program.name ); end
+	if printers.include? "sh"; hash.update( program.hex( false ) ); end
+	if printers.include? "sn"; hash.update( program.name( false ) ); end
+	puts JSON.pretty_generate( hash )
 end
