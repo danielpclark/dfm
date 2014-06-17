@@ -48,7 +48,7 @@ class DFM
 	end
 
 	# Start a fresh recursive search with empty hash indexes.
-	# Accepts parameter for path.  (See filters for settings file extensions.)
+	# Accepts parameter for path.  (See filters for setting file extensions.)
 	def recurse( path )
 		@files_by_hexdigest = {}
 		@files_by_name = {}

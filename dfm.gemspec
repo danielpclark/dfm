@@ -6,7 +6,7 @@ Gem::Specification.new do |s|
   s.version     = DFM::VERSION
   s.licenses    = ['The MIT License (MIT)']
   s.summary     = "Duplicate File Manager."
-  s.description = "Duplicate File Manager.  Parse duplicate files to process!"
+  s.description = "Duplicate File Manager.  Recursively index duplicate files!"
   s.authors     = ["Daniel P. Clark / 6ftDan(TM)"]
   s.email       = 'webmaster@6ftdan.com'
   s.files       = ['lib/dfm/version.rb', 'lib/dfm.rb', 'README.md', 'LICENSE', 'bin/dfm']
@@ -14,4 +14,5 @@ Gem::Specification.new do |s|
   s.executables = ['dfm']
   s.platform    = 'ruby'
   s.require_paths = ['lib']
+  s.required_ruby_version = '>= 1.9.1'
 end
