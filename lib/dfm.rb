@@ -1,4 +1,4 @@
-# Tilte::     Duplicate File Manager (dfm)
+# Title::     Duplicate File Manager (dfm)
 # Author::    Daniel P. Clark  (mailto:6ftdan@gmail.com)
 # License::   MIT License
 ['digest','json','dfm/version'].each {|r|require r;}
