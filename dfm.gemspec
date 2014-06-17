@@ -1,6 +1,6 @@
 $:.push File.expand_path("../lib", __FILE__)
 require "dfm/version"
-
+ 
 Gem::Specification.new do |s|
   s.name        = 'dfm'
   s.version     = DFM::VERSION
