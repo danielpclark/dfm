@@ -1,9 +1,9 @@
-# Tilte::     Duplicate File Manager (dfm)
+# Title::     Duplicate File Manager (dfm)
 # Author::    Daniel P. Clark  (mailto:6ftdan@gmail.com)
 # License::   MIT License
 ['digest','json','dfm/version'].each {|r|require r;}
 # Class instance of DFM generates a list of files recursively
-# and indexes the by both MD5 hexdigest and file name
+# and indexes them by both MD5 hexdigest and file name
 # Optional parameters include file extension filters with
 # { :filters => ["jpg", "png"] } and path suh as { :path => "./" }
 class DFM
