@@ -1,8 +1,10 @@
 class DFM
 	#:nodoc:
-	VERSION = "0.0.4"
+	VERSION = "0.0.5"
 end
 
+# Version 0.0.5
+# * Specified Ruby version >= 1.9.1
 # Version 0.0.4
 # * RDOC
 # Version 0.0.3
